@@ -94,3 +94,87 @@ def wheat(request):
     return render(request,"Wheat.html")
 def bajra(request):
     return render(request,"Bajra.html")
+def DeoriaWheat(x,yr):
+    data=pd.read_csv('F:\crop\croppred\module\DeoriaWheat.csv')
+    X=data['Crop_Year'].values
+    Y=data['P/A'].values
+    mean_x = np.mean(X)
+    mean_y = np.mean(Y)
+    m = len(X)
+    num = 0
+    den = 0
+    for i in range(m):
+        num += (X[i] - mean_x) * (Y[i] - mean_y)
+        den += (X[i] - mean_x) ** 2
+    b1 = num / den
+    b0 = mean_y - (b1* mean_x)
+    y=b1*yr+b0
+    y=y*x
+    return y
+def DeoriaBajra(x,yr):
+    data=pd.read_csv('F:\crop\croppred\module\DeoriaBajra.csv')
+    X=data['Crop_Year'].values
+    Y=data['P/A'].values
+    mean_x = np.mean(X)
+    mean_y = np.mean(Y)
+    m = len(X)
+    num = 0
+    den = 0
+    for i in range(m):
+        num += (X[i] - mean_x) * (Y[i] - mean_y)
+        den += (X[i] - mean_x) ** 2
+    b1 = num / den
+    b0 = mean_y - (b1* mean_x)
+    y=b1*yr+b0
+    y=y*x
+    return y
+def HathrasWheat(x,yr):
+    data=pd.read_csv('F:\crop\croppred\module\HathrasWheat.csv')
+    X=data['Crop_Year'].values
+    Y=data['P/A'].values
+    mean_x = np.mean(X)
+    mean_y = np.mean(Y)
+    m = len(X)
+    num = 0
+    den = 0
+    for i in range(m):
+        num += (X[i] - mean_x) * (Y[i] - mean_y)
+        den += (X[i] - mean_x) ** 2
+    b1 = num / den
+    b0 = mean_y - (b1* mean_x)
+    y=b1*yr+b0
+    y=y*x
+    return y
+def HathrasBajra(x,yr):
+    data=pd.read_csv('F:\crop\croppred\module\HathrasBajra.csv')
+    X=data['Crop_Year'].values
+    Y=data['P/A'].values
+    mean_x = np.mean(X)
+    mean_y = np.mean(Y)
+    m = len(X)
+    num = 0
+    den = 0
+    for i in range(m):
+        num += (X[i] - mean_x) * (Y[i] - mean_y)
+        den += (X[i] - mean_x) ** 2
+    b1 = num / den
+    b0 = mean_y - (b1* mean_x)
+    y=b1*yr+b0
+    y=y*x
+    return y
+def Shah(request):
+    return render(request,"Shah.html")
+def soh(request):
+    x=int(request.GET.get("area"))
+    nm=str(request.GET.get("crop"))
+    dist=str(request.GET.get("dist"))
+    yr=int(request.GET.get("yr"))
+    if dist=='Deoria' and nm=='Wheat':
+        y=DeoriaWheat(x,yr-1996)
+    if dist=='Deoria' and nm=='Bajra':
+        y=DeoriaBajra(x,(yr-1996)/10)
+    if dist=='Hathras' and nm=='Wheat':
+        y=HathrasWheat(x,(yr-1996)/10)
+    if dist=='Hathras' and nm=='Bajra':
+        y=HathrasBajra(x,(yr-1996)/10)
+    return render(request,"production2.html",{"prod":y,"crop":nm,"area":x,"year":yr,"dist":dist})
